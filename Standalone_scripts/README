@@ -1,1 +1,2 @@
 
+1) fastqTotrimmedFastq.sh uses fastp code to convert many fastq files to trimmed fastq files. 
