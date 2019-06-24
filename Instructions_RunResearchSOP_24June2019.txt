@@ -1,0 +1,349 @@
+# Instructions to set up and run research SOP pipeline
+#
+# P. Roy, (June 12, 2019)
+########################################################################
+
+
+1) Get access to tars & t1000 servers, and AWS from Tom. 
+
+2) Also ask Tom to give you access to Confluence and Atlassian bitbucket.
+
+3) Install required packages:
+
+Go to confluence page: https://arc-bio.atlassian.net/wiki/spaces/BF/pages/504922114/Arcbio+Our+Private+Packages to look up instructions for cloning the required packages. 
+
+   a) Go to your folder on tars: $ssh tars
+      Create ~/.pip/pip.conf file following the instructions 1 and 2 on the confluence page. 
+
+   b) Install pip if it is not already installed.
+      $pip install --user --upgrade pip
+
+   c) Now create a virtual env:  
+       i) $pip install virtualenv
+       ii) $virtualenv venv
+      
+   d) Start virutalenv: $source venv/bin/activate
+
+   e) Now install the required packages. Note: you only need to install pathogenid. It will install the rest of the packages listed at arcbio-pypi. 
+       i) $pip install pathogenid
+
+   f) Install R packages:
+       
+       i) Make sure you are in your virtual environment where you want to create standard report. 
+
+       ii) $ cd ~
+          $ R
+       iii) > install.packages("optparse") 
+           On prompt, select 59 (for USA)
+
+           > install.packages("tidyr")
+           > install.packages("dplyr")
+           > install.packages("data.table")
+           > install.packages("ggplot2")
+           > install.packages("pheatmap")
+            
+
+4 A) Run ResearchSOP to convert bcl files to Trimmed Fastq:
+
+The main instructions are given at https://arc-bio.atlassian.net/wiki/spaces/BF/pages/554336257/Running+the+ResearchSOP+rsop in atlassian. But some important steps are missing. So, here is the complete set. 
+
+   a) Open your .bashrc file and add the following:
+      export ARCIVE_CONFIGURATION=/mnt/bdbStorage01/data/s3.json
+
+   b) Save .bashrc and run it: $source ~/.bashrc
+
+   c) Copy an example-data-folder containing the .bcl files to your home directory for a mock run. Note that these folders are huge (~100GB) so copying will take time (~few hrs). 
+
+       i) To copy, $cp -rp /mnt/bdbStorage01/sbs/170720_NB501788_0051_AHMNKGAFXX 
+          Here 170720_NB501788_0051_AHMNKGAFXX is one of the runs/samples. 
+
+         Copy everything except the 'projects' folder from 170720_NB501788_0051_AHMNKGAFXX. It contains the output 
+         (The fastq files) and we don't need to copy it because we will create it ourselves by running the
+         pipeline. 
+
+   d) Go to your home directory: $cd ~
+
+   e) Before we run the researchSOP, start a screen session because the job will take a very long time. 
+      $ screen -S RSOP
+
+   f) In this screen session, run researchSOP: 
+      $luigi --module pathogenid.researchsop AnalyzeRun --directory /home/roy/170817_NB501788_0058_AH3HWGBGX3/ --sample-sheet 20170817_RUN058_SampleSheet.csv --AvailableThreads-threads 64 --local-scheduler > log_RSOP 2> error_SOP
+
+      Here, 20170817_RUN058_SampleSheet.csv is the name of the csv file which is located inside the 170817_NB501788_0058_AH3HWGBGX3 folder. 
+
+      Note that the bcl to fastq conversion code is in the pathogenid package. 
+
+  g) To detach the screen session: ctrl+A, then press d.
+
+  If you only have a run folder with libraries (also known as samples) containing demultiplexed fastqs and you want to get the trimmed fastqs and the multiQC report, then: 
+
+
+  A') Go to the Run folder. Create a fake .csv file with the same 'Sample-ID' as the library name (e.g. LIB-01) of your sample, the same sample name as your fastq (e.g. Neg_Control), a fake sample project name. The rest of the columns can be blanks. E.g. here:
+----------------------------------------------------------------------------------------------------------------
+[Header],,,,,,,,,,,
+IEMFileVersion,4,,,,,,,,,,
+Investigator Name,To be Edited,,,,,,,,,,
+Experiment Name,Dummy Sample Sheet,,,,,,,,,,
+Date,42661,,,,,,,,,,
+Workflow,GenerateFASTQ,,,,,,,,,,
+Application,NextSeq FASTQ Only,,,,,,,,,,
+Assay,TruSeq HT,,,,,,,,,,
+Description,,,,,,,,,,,
+Chemistry,Amplicon,,,,,,,,,,
+,,,,,,,,,,,
+[Reads],,,,,,,,,,,
+76,,,,,,,,,,,
+76,,,,,,,,,,,
+,,,,,,,,,,,
+[Settings],,,,,,,,,,,
+Adapter,AGATCGGAAGAGCACACGTCTGAACTCCAGTCA,,,,,,,,,,
+AdapterRead2,AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT,,,,,,,,,,
+,,,,,,,,,,,
+[Data],,,,,,,,,,,
+Sample_ID,Sample_Name,Sample_Plate,Sample_Well,I7_Index_ID,index,I5_Index_ID,index2,Sample_Project,Description,se
+q_date,run_number
+LIB-01,Neg_Control,,,  ,  ,  ,  ,UCL_Samples,  ,  ,1
+LIB-02,Neg_Control_Dep,,,  ,  ,  ,  ,UCL_Samples,  ,  ,1
+.
+.
+.
+----------------------------------------------------------------------------------------------------------------
+
+  B') Make a DeMultiplexingComplete.txt file containing the text 'Done' (without the inverted commas). 
+
+  C') Create a 'projects' folder inside the Run folder. 
+ 
+  D') Create a folder with the same name as the <Sample_Project> in the .csv file. In this example, it is 'UCL_Samples'.
+
+  E') Move your libraries (LIB-01, LIB-02 etc.) inside the projects/UCL_Samples folder. 
+
+  This way you have created a fake instance to simulate the situation where the RSOP code would have created from the bcl files to get the demultiplexed fastqs. Now, you can run RSOP using Luigi in the conventional way. 
+   
+  luigi --module pathogenid.researchsop AnalyzeRun --directory /home/roy/<your_run_folder> --sample-sheet <your_fake_sample_sheet.csv> --AvailableThreads-threads 64 --local-scheduler > log_RSOP 2> error_SOP
+
+
+    
+4 B) To get trimmed fastq files from demultiplexed fastq files instead of the bcl files: 
+
+    a) Start the virtual environment. 
+
+    b) Start a new screen session: screen -S TrimmedFastQs
+    
+    c) $cd home/roy/standalone_scripts/. Make sure this has a 'logs' folder. 
+
+    d) $./fastqTotrimmedFastq.sh <pathToLibDirs> <sample_name> <date>
+
+     E.g. './fastqTotrimmedFastq_V.sh ~/AssayResearchSamples_14Jun2019/Plasma_Precipitation AssaySamples 19June2019'
+    
+
+5) Uploading the trimmed fastQs (post bwa + human removal) to arcive:
+
+   a) Stay in your virtual env. Go to /home/roy/identifyTPxStandardAnalysis.R/
+
+   c) Start a new screen session: $ screen -S TrimmedFastQ_Upload
+   
+   d) Run the script for uploading the trimmed fastq files to arcive.
+
+     $cd ~/identifyTPxStandardAnalysis.R/logs
+
+     $./cleanup_uploadlog (for cleaning up the old log files)
+
+     $ cd ..
+     $stdbuf -oL ./luigiMultiFileUpload.sh /home/roy/170817_NB501788_0058_AH3HWGBGX3/projects/HIV_Verification/ > logs/log_trim_upload 2>logs/error_upload
+
+    Important: If you are on t1000 server, then be sure that luigiMultiFileUpload.sh has '--local-scheduler' at the end of the Luigi command. 
+      
+     Here, HIV_Verification directory is the dir that contains the library folders LI-*, which in turn have the trimmed fastq files in the fastp/ directories.
+
+   e) Exit the screen session: ctrl+A, then d.
+
+6) Run IDP (For alignment and strain calling) after 5) reaches completion (will take about 30-60 min).
+   a) First check on arcive that all trimmed files were uploaded successfully.
+      i) $pgsql
+      arcive=>select * from samples where select * from samples where arc_case_id like 'TRIMMED%_SeraCare%' limit <#trimmed_files you are uploading+1>;
+
+      If you see the correct # of files uploaded with status 'pending', then it means the files were uploaded successfully and are waiting for being analyzed. To exit arcive, => \q
+
+   b) Start a new screen session: $ screen -S IDP
+
+   c) $cd /home/roy/identifyTPxStandardAnalysis.R/logs
+
+   d) $./cleanup_IDP_log, $cd ..
+    
+   e) $stdbuf -oL ./RunIDP.py /home/roy/170817_NB501788_0058_AH3HWGBGX3/20170817_RUN058_SampleSheet.csv 325 /home/roy/170817_NB501788_0058_AH3HWGBGX3/projects/HIV_Verification > logs/log_IDP 2>logs/error_IDP
+
+This will write the logs to a 'log' and the errors to 'error_IDP' files.
+
+Stdbuf -oL makes the outputs and errors go immediately to the log files while the code runs, instead of buffering everything and printing to the files at the end of the run.
+
+Make sure to check the log_IDP file and confirm that the arcive ids match the library ids (see 'libRecDirMatch' in the log file).
+
+   d) Exit the screen session. 
+
+7) At the completion of 'Run IDP' (a few hours), aggregate all strain files: 
+
+   a) Start a new screen session: $ screen -S StrainAgg
+
+   b) Create a new folder called Strain_Calls in /home/roy/170817_NB501788_0058_AH3HWGBGX3/projects/HIV_Verification/
+
+   c) $cd /home/roy/identifyTPxStandardAnalysis.R/ 
+
+   d) $stdbuf -oL ./idpReportAddInfo.py /home/roy/170817_NB501788_0058_AH3HWGBGX3/20170817_RUN058_SampleSheet.csv /home/roy/170817_NB501788_0058_AH3HWGBGX3/projects/HIV_Verification 325 > logs/log_StrainAgg 2> logs/error_StrainAgg
+
+   e) Exit the screen session. 
+
+8) At the completion of the above step, create a standard report: 
+
+   a) Go to your virtualenv and start a new screen called StandardReport.
+
+   b) Create a new directory called Std_Report inside the Strain_Calls directory. E.g. 
+       $ mkdir /tars01/roy/Strain_Calls/Std_Report
+
+   c) Creat a mapping file <Date>_run<run_number>_mappingFile.csv inside the Strain_Calls directory. Most of the information to create it is already in the <sample_sheet.csv> but you may need some help from Alain or Vaishnavi to create it.
+
+   d) Make sure that all of the *.tsv files with strain calls are inside the Strain_Calls directory. If not, move them there. 
+    
+   d) To run:
+      $cd identifyTPxStandardAnalysis.R
+
+      $ stdbuf -oL Rscript identifyTPxStandardAnalysis.R -i /home/roy/run295/projects/TPx_Probit_18reps_30M_run1/Strain_Calls/  -o /home/roy/run295/projects/TPx_Probit_18reps_30M_run1/Strain_Calls/Std_Report -m /home/roy/run295/projects/TPx_Probit_18reps_30M_run1/Strain_Calls/20190205_run295_mappingFile.csv -r _strainCalls.tsv > /home/roy/identifyTPxStandardAnalysis.R/logs/log_StdReport_run295_23June2019 2> /home/roy/identifyTPxStandardAnalysis.R/logs/error_StdReport_run295_test_23June2019
+
+This will save the standard report in the /Strain_Calls directory. Mv them to the Std_Report directory within the Strain_Calls Dir.  
+
+DONE!!
+
+
+10) To save your data on Amazon cloud S3:
+
+    $ cd ~
+    $ Check whether you have was set up on your laptop or your home dir on the servers, from where you want to upload the data to S3. For this:
+    $ aws s3 ls s3://arcbio.research.com/
+
+    You should see something like this: 
+
+    $ aws s3 ls s3://arcbio.research.com/
+                           PRE MONTHLY/
+                           PRE WEEKLY/
+                           PRE YEARLY/
+
+   If yes, you are all set to upload your data to S3. To upload your folder: 
+   a) Go to S3 web, arcbio research bucket/<your_name>: https://s3.console.aws.amazon.com/s3/buckets/arcbio.research.com/MONTHLY/roy/?region=us-east-2&tab=overview
+      
+   b) Create a new folder with apropriate name representing your sample. E.g. Brown_Samples_MultiQC_24June2019
+
+   c) To copy your directory to S3:
+      $aws s3 cp <path_to_your_folder> s3://arcbio.research.com/MONTHLY/roy/Brown_Samples_MultiQC_24June2019 --recursive
+      
+      If you are uploading a file, remove the '--recursive' option.
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
+#Below are some notes on Vaishnavi's way of uploading to arcive, running IDP. I am not using this anymore, but it has some useful information about arcive. 
+
+5) 30 min after you run the researchSOP, you can start another screen and upload the pathogens (the  to Archive. These are the *_R1_* (paired end 1) and *_R2_* (paired end 2) files located in projects/HIV_verification/LI* folders. 
+
+$ screen -S upload2Arcive
+
+$ cd 170720_NB501788_0051_AHMNKGAFXX/projects/HIV_Verification
+
+$ for dir in LI*; do cd $dir; f1=$(find . -maxdepth 1 -name "*_R1_*"); f2=$(find . -maxdepth 1 -name "*_R2_*"); luigi --module pathogenid.newdata NewSample --paired-end-one $f1 --paired-end-two $f2 --local-scheduler; cd ../; done
+
+Then, detach the screen.
+
+6) To monitor the progress, $htop -u roy
+
+   To see if how many screen sessions are running and their names, $screen -ls
+
+7) The uploading of the fastq files will take about 30 min. You can check whether the uploading reached completion by going back to the screen session and checking the log. If it says something along the lines 'progress looks :) ...' then it indicates that the job finished without a problem. 
+
+Another way to check is by checking how many fastq files are there. The # is the same as the # of LI* directories. 
+
+$ls -ld 170817_NB501788_0058_AH3HWGBGX3/projects/HIV_Verification/LI* | wc -l
+
+Then login to the arcive database using postgre sql. The fastq files are uploaded to the 'samples' table. I have set up an alias 'pgsql' for the login command.
+
+To login to archive: $pgsql
+
+arcive=> select * from samples order by id desc limit <# of LI folders +1>; # shows fastq files uploaded in descending order (i.e. most recent to back in time). 
+
+You should be able to see all of your .fastq files if the uploading completed. 
+
+To exit arcive: arcive=>\q
+
+8) To run identify SOP (i.e. alignment + strain calling on the demultiplexed fastq files):
+
+   a) Go back to the upload2Arcive screen session or start a new screen.
+
+   b) ssh to tars. 
+
+   c) Copy the sample IDs of your fastq files from arcive to a text file in your home folder:
+
+       i) Login to arcive by running $pgsql.
+
+       ii) arcive=> \copy (select id from samples order by id DESC limit <# of LI folders>) to sample.txt
+
+       iii) arcive=> \q
+
+     This will save all sample IDs to a sample.txt file which will be saved in the same directory from where you
+     connected to arcive (which, in this case, is your home folder). 
+
+  d) Enter virtual environment and run a screen session:
+     $ source env/bin/activate
+
+     $ screen -S IDP
+    
+  e) Run IDP at this screen:
+     First save the command for IDP in an executable file called luigi.sh. It will contain the following command for IDP from the cheat sheet on confluence (https://arc-bio.atlassian.net/wiki/spaces/BF/pages/41910274/Bioinformatics+Cheat+Sheet):
+
+     luigi --module pathogenid.identify IdentifyFromDatabase --sample-id ${1} --source-id ${2} --directory ${3} --local-scheduler 
+
+     Next, run IDP for all fastqs and create a directory corresponding to each of them
+     $ for i in $(<sample.txt); do ./luigi.sh ${i} 325 170817_NB501788_0058_AH3HWGBGX3/projects/idp_output/${i}; done
+
+Here, I each i is the id for the fastq, Luigi.sh is executed for each i, 325 is the source_ID and 170817_NB501788_0058_AH3HWGBGX3/projects/idp_output/${i} is the path to where the program will run for each i. 
+
+  f) exit the screen: ctrl+A then press d. 
+
+9) Creating standard report: 
+
+    a) Clone identifyTPxStandardAnalysis.R to your home folder, from https://bitbucket.org/walain/awatts/src/master/identifyTPxStandardAnalysis.R. This will be used to create the standard report. 
+
+    
+
+
+
+
+#######################################################################################
+Extra notes
+#######################################################################################
+
+1) To change names of files from *.gz to *_new.gz, inside all LI-* directories:/Users/priyaroy/Desktop/Instructions_RunResearchSOP_16June2019.txt
+
+$for dir in LI-*; do cd $dir; for file in *.gz; do mv "$file" "New${file%.gz}.gz"; done; cd ..; done;
+   
+
+2) To list all tables in our pgsql information_schema arrive:
+arcive=>SELECT table_name FROM information_schema.tables WHERE table_schema='public';
+
+3) To rename multiple files: 
+
+   $ rename 'original_string' replacement_string *.<file_extension>
+
+
+   E.g. $rename 'Strain_Callsprobit' probit *.tsv 
+        Renames all tsk files with names like Strain_Callsprobit_TPx_30M_LIB*.tsv to probit_TPx_30M_LIB*.tsv
+
+
+ 
+      
+
+
+
+
+
+
+
