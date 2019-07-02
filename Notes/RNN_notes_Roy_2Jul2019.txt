@@ -1,0 +1,133 @@
+June 27, 2019
+
+Recurrent NN:
+
+1) Tokenizer:  to convert text to integers
+
+Example here: https://towardsdatascience.com/multi-class-text-classification-with-lstm-1590bee1bd17
+
+MAX_NB_WORDS = 50000
+# Max number of words in each complaint.
+MAX_SEQUENCE_LENGTH = 250
+# This is fixed.
+EMBEDDING_DIM = 100
+tokenizer = Tokenizer(num_words=MAX_NB_WORDS, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
+tokenizer.fit_on_texts(df['Consumer complaint narrative'].values)
+word_index = tokenizer.word_index
+print('Found %s unique tokens.' % len(word_index))
+
+
+2) Next, truncate and pad the sequences
+
+X = tokenizer.texts_to_sequences(df['Consumer complaint narrative'].values)
+X = pad_sequences(X, maxlen=MAX_SEQUENCE_LENGTH)
+print('Shape of data tensor:', X.shape)
+
+
+3) Convert the pathogen labels into numbers using one-hot encoding.
+
+4) Split data into training and test sets. 
+
+5) Create a model which does the following:
+
+   a) Create an embedded layer: This converts text into vectors and is more efficient than 1-hot encoding. 
+
+    Keras Embedding documentation: https://www.tensorflow.org/api_docs/python/tf/keras/layers/Embedding
+
+   This should be the 1st layer in the model. A very good explanation of embedding and its advantage over 1-hot encoding is given in https://towardsdatascience.com/deep-learning-4-embedding-layers-f9a02d55ac12.
+
+   ‪model = Sequential()‬
+‪model.add(Embedding(X, Y, Z))‬
+
+X: size of the vocabulary. It is the max. # words to be used. For a 5-mer, it I 4^5 = 1024. 
+
+Y: Dim. of the dense embedding. It is the length of the vector or the # latent factors. 
+
+Z: input length. It is the length of the input sequence which is a constant after padding. For us, it will be 75 bp/5 for a 5-mer (I guess).
+  
+Here is an explanation of how embedding is better than 1-hot encoding when you have many “words”:
+
+Suppose you have a 2-mer and a simple read which goes as AGTCGT. You can essentially consider it as a sentence made with 3 words, AG, TC, GT (because each word is a 2-mer). 
+
+Now, for a 2-mer with 4 bases, there are only 4^2 = 16 possible combinations. We can refer to this as our “vocabulary” for the “words” that we are considering. Each word is represented as an integer, going from 1-16: 
+
+AA 1
+AC 2
+AG 3
+AT 4
+
+CA 5
+CC 6
+CG 7
+CT 8 and so on. 
+
+So, the integer representation of the sentence [AG, TC, GT] is: [3, 14, 12]
+
+Now, what happens here is that each integer is represented in a 10 dimensional space (each dim. is called a latent factor). 
+
+
+   Integer    dim.1  dim.2. dim. 3  dim. 4.    
+      1.        0.1.   0.9.   0.3.    0.5
+      2.        0.9.   0.6.   0.2.    0.0
+      3.        0.0.   0.1.   0.4.    0.7
+      .
+      .
+      .
+      16.       1.0.   1.0.   1.0.    0.9
+
+(The #s for the latent factors are right now arbitrary but as the model gets trained, similar “words” get placed in similar regions in the 10 dim. space).
+
+This is equivalent to 16X10 dimensional matrix. 
+
+If we were using 1-hot encoding, we would have needed 16X16 matrix to reprent all “words”. So, as you can see, as we go to bigger k-mers, embedding becomes computationally more efficient and has an additional advantage of grouping similar words in the n-dimensional space. 
+
+
+
+
+Additional notes:
+
+1) Very helpful website to understand LSTM https://skymind.ai/wiki/lstm#long 
+
+  Some precautions. Never make the # parameters in your model > # samples. That leads to over-fitting. Here are some links that give tricks to prevent over-fitting.  
+
+#parameters  = [input_dim * # memory_cells + (#memory_cell)^2+#memory_cells)*4 ]
+
+Where # memory cells are the # lstm cells in an last layer. It is the same as the number of units = dim. Of output space. 
+
+Input dim is the dimensionality of the vector that represents a word. It is equal to the #latent factors in embedding. 
+
+Some tricks (https://stats.stackexchange.com/questions/204745/preventing-overfitting-of-lstm-on-small-dataset) to prevent over-fitting:
+
+   a) Keep # parameters < # instances.
+
+   b) A rule of thumb is to keep # memory cells between # output classes and input_dim.
+
+   c) Prefer stacking LSTM layers (i.e. deep NN) over increasing # memory cells in each LSTM layer. Deep NN give better results. 
+
+Diagram showing how an LSTM layer looks and how to compute the corresponding number of parameters:
+https://stats.stackexchange.com/questions/365428/difference-between-a-single-unit-lstm-and-3-unit-lstm-neural-network/365600#365600?newreg=f00e999a9937454e98ec70c2a5046239
+
+
+2) http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
+Explains embedding and has some cool graphs.
+
+3) https://www.tensorflow.org/tutorials/representation/word2vec
+Example of how embedding clusters the “words” that capture some general semantic relationships e.g. gender, verb tense etc. 
+
+4) GRU (Gated Recurrent Units) Vs. LSTM (Long Short Term Memory)
+
+a) GRU: advantage: 
+
+                Computationally faster since it has lesser gates. 
+                 
+b) GRU disadvantage: longer sentences do better with LSTM than with GRU. 
+
+5) A very good example of a multi-text classification with 1 LSTM layer made of 100 memory cells:
+https://towardsdatascience.com/multi-class-text-classification-with-lstm-1590bee1bd17
+
+6) Step-by-step details to build an LSTM (including which packages to download) :
+
+https://blog.goodaudience.com/first-experience-of-building-a-lstm-model-with-tensorflow-e632bde911e1
+
+
+
