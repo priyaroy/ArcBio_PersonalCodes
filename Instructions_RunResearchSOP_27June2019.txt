@@ -180,7 +180,7 @@ LIB-02,Neg_Control_Dep,,,  ,  ,  ,  ,UCL_Samples,  ,  ,1
 
      $ cd ..
      $stdbuf -oL ./luigiMultiFileUpload.sh /home/roy/170817_NB501788_0058_AH3HWGBGX3/
-      projects/HIV_Verification/ > logs/log_trim_upload 2>logs/error_upload
+      projects/HIV_Verification > logs/log_trim_upload 2>logs/error_upload
 
     Important: If you are on t1000 server, then be sure that luigiMultiFileUpload.sh 
     has '--local-scheduler' at the end of the Luigi command. 
