@@ -403,7 +403,32 @@ After you make any change, do
 
 to save and compile the changes.
 
- 
+ 5) To rename all files within multiple directories such that the directory
+ Names go before the corresponding file names within those directories: 
+
+E.g. suppose you have LI-01, LI-02, LI-03.
+
+LI-01: 
+       1.txt  2.txt
+LI-02: 
+       1.txt  2.txt
+LI-03:
+       1.txt  2.txt
+
+You want:
+
+LI-01: 
+       LI-01_1.txt  LI-01_2.txt
+LI-02: 
+       LI-02_1.txt  LI-02_2.txt
+LI-03:
+       LI-03_1.txt  LI-03_2.txt
+     
+
+For this, type in bash:
+
+$for dir in LI-*; do cd $dir; for i in *.txt; do newname="$dir""_""$i"; mv $i $newname; done; cd ../; done
+
       
 
 
