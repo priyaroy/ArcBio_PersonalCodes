@@ -429,6 +429,11 @@ For this, type in bash:
 
 $for dir in LI-*; do cd $dir; for i in *.txt; do newname="$dir""_""$i"; mv $i $newname; done; cd ../; done
 
+6) To make multiple directories using for loop in bash:
+
+   Eg. if you want to creat LI-15 to LI-28 directories, 
+       $for i in `seq 15 28`; do mkdir LI-$i; done;
+
       
 
 
