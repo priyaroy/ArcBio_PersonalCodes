@@ -100,8 +100,8 @@ steps are missing. So, here is the complete set.
 
   A') Go to the Run folder. Create a fake .csv file with the same 'Sample-ID' as 
       the library name (e.g. LIB-01) of your sample, the same sample name as your 
-      fastq (e.g. Neg_Control), a fake sample project name. The rest of the columns
-      can be blanks. E.g. here:
+      fastq name up to right before '_S%_R%_XXX.fastq.gz' (e.g. Neg_Control), 
+      a fake sample project name. The rest of the columns can be blanks. E.g. here:
 ----------------------------------------------------------------------------------------------------------------
 [Header],,,,,,,,,,,
 IEMFileVersion,4,,,,,,,,,,
