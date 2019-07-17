@@ -179,6 +179,14 @@ LIB-02,Neg_Control_Dep,,,  ,  ,  ,  ,UCL_Samples,  ,  ,1
      $./cleanup_uploadlog (for cleaning up the old log files)
 
      $ cd ..
+     
+      $ emacs luigiMultiFileUpload.sh
+      
+     Open this code and check that it has the right names for the libraries.
+     Some libraries are called 'LI-', some are 'LIB-', some are 'SOS' and so on. So, 
+     check the library names of your samples and add the same names to line 3 of 
+     luigiMultiFileUpload.sh. 
+     
      $stdbuf -oL ./luigiMultiFileUpload.sh /home/roy/170817_NB501788_0058_AH3HWGBGX3/
       projects/HIV_Verification > logs/log_trim_upload 2>logs/error_upload
 
@@ -207,6 +215,17 @@ LIB-02,Neg_Control_Dep,,,  ,  ,  ,  ,UCL_Samples,  ,  ,1
    c) $cd /home/roy/identifyTPxStandardAnalysis.R/logs
 
    d) $./cleanup_IDP_log, $cd ..
+   
+   e) $ emacs RunIDP.py
+      
+     Open this code and check that it has the right names for the libraries.
+     Some libraries are called 'LI-', some are 'LIB-', some are 'SOS' and so on. So, 
+     check the library names of your samples and add the same names to line 44 of 
+     RunIDP.py. 
+     
+     Additionally, if you uploaded the trimmed fastqs of these libraries to arcive more than
+     once, then arcive will have multiple copies of the same libs. Change the query in RunIDP.py
+     such that you choose the correct id (arcive id) for your libs.
     
    e) $stdbuf -oL ./RunIDP.py /home/roy/170817_NB501788_0058_AH3HWGBGX3/
       20170817_RUN058_SampleSheet.csv 325 /home/roy/170817_NB501788_0058_AH3HWGBGX3/
@@ -231,12 +250,19 @@ library ids (see 'libRecDirMatch' in the log file).
       170817_NB501788_0058_AH3HWGBGX3/projects/HIV_Verification/
 
    c) $cd /home/roy/identifyTPxStandardAnalysis.R/ 
+   
+   d) $emacs idpReportAddInfo.py
+   
+     Open this code and check that it has the right names for the libraries.
+     Some libraries are called 'LI-', some are 'LIB-', some are 'SOS' and so on. So, 
+     check the library names of your samples and add the same names to lines 25 and 56 of 
+     idpReportAddInfo.py. 
 
-   d) $stdbuf -oL ./idpReportAddInfo.py /home/roy/170817_NB501788_0058_AH3HWGBGX3/
+   e) $stdbuf -oL ./idpReportAddInfo.py /home/roy/170817_NB501788_0058_AH3HWGBGX3/
       20170817_RUN058_SampleSheet.csv /home/roy/170817_NB501788_0058_AH3HWGBGX3/
       projects/HIV_Verification 325 > logs/log_StrainAgg 2> logs/error_StrainAgg
 
-   e) Exit the screen session. 
+   f) Exit the screen session. 
 
 8) At the completion of the above step, create a standard report: 
 
