@@ -1,3 +1,9 @@
+#####################################################################
+# This script uses the magic of pandas dataframe to plot 285 columns
+# of a table against column0 
+#######################################################################
+
+
 import numpy as np
 import pandas as pd
 
@@ -20,10 +26,15 @@ pylab.rcParams.update(params)
 df = pd.read_csv('../data/data.csv', delimiter=',', )
 print(df.shape)
 
+# Plot all columns versus column 0 in a single plot
 df.set_index('bp').plot(legend=None)
+
+# Beautify the plot
 plt.ylim(0,40)
 plt.ylabel('Phred Score', fontweight = 'bold')
 plt.xlabel('Bp', fontweight = 'bold')
 #plt.show()
+
+# Save the plot
 plt.savefig('../plots/PhredScores.png', bbox_inches='tight')
 
