@@ -1,6 +1,7 @@
 #####################################################################
 # This script uses the magic of pandas dataframe to plot 285 columns
-# of a table against column0 
+# of a table against column0. You can see the plot 'PhredScores.png' in 
+# the same folder.
 #######################################################################
 
 
@@ -37,4 +38,5 @@ plt.xlabel('Bp', fontweight = 'bold')
 
 # Save the plot
 plt.savefig('../plots/PhredScores.png', bbox_inches='tight')
+
 
