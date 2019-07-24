@@ -289,7 +289,10 @@ library ids (see 'libRecDirMatch' in the log file).
       log_StdReport_run295_23June2019 2> /home/roy/identifyTPxStandardAnalysis.R/
       logs/error_StdReport_run295_test_23June2019
 
-This will save the standard report in the /Strain_Calls directory. Move them to the 
+IMPORTANT: Do not miss out the underscore in '_strainCalls.tsv' in the above command! You will
+not get any results (pngs) and your std report textfiles will be empty. 
+
+ This will save the standard report in the /Strain_Calls directory. Move them to the 
 Std_Report directory within the Strain_Calls Dir.  
 
 DONE!!
