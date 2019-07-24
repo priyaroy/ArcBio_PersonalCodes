@@ -1,15 +1,19 @@
 Instructions for Reviewing Pull Requests
 
-1) Go to the relevant bitbucket repository on the Arc Bitbucket web. E.g., for V's pull request on neural nets data preprocessing, I went to:
+1) Go to the relevant bitbucket repository on the Arc Bitbucket web. 
+E.g., for V's pull request on neural nets data preprocessing, I went to:
 https://bitbucket.org/arcbioinformatics/infinity/branch/VN
 
 2) Clone the repository to your local machine:
 $git clone https://bitbucket.org/arcbioinformatics/infinity/branch/VN 
 
-3) By default you will be on the dev branch in your local cloned repository. You may have to change the branch depending on the pull request. E.g. I had to go to VN branch. 
+3) By default you will be on the dev branch in your local cloned repository. 
+You may have to change the branch depending on the pull request. E.g. I 
+had to go to VN branch. 
 
 $ git checkout VN
 
-4) Go to the Arc Bitbucket web and click on Pull requests. You can add your comments there. You can click on the relevant code and add comments under it. 
+4) Go to the Arc Bitbucket web and click on Pull requests. You can add your 
+comments there. You can click on the relevant code and add comments under it. 
 
 
