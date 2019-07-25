@@ -281,7 +281,7 @@ library ids (see 'libRecDirMatch' in the log file).
    d) To run:
       $cd identifyTPxStandardAnalysis.R
 
-      $ stdbuf -oL Rscript identifyTPxStandardAnalysis.R -i /home/roy/run295/projects/
+      $ stdbuf -oL Rscript ./identifyTPxStandardAnalysis.R -i /home/roy/run295/projects/
        TPx_Probit_18reps_30M_run1/Strain_Calls/  -o /home/roy/run295/projects/
        TPx_Probit_18reps_30M_run1/Strain_Calls/Std_Report -m /home/roy/run295/
        projects/TPx_Probit_18reps_30M_run1/Strain_Calls/20190205_run295_mappingFile.csv
