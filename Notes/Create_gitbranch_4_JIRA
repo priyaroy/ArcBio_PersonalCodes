@@ -1,0 +1,3 @@
+Go to jira ticket -> create branch.
+Select the bitbucket main repository under which you want this branch.
+Choose the branch as dev, not master. 
