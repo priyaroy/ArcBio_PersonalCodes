@@ -1,3 +1,11 @@
-virtualenv -p /usr/bin/python3 py3env # Create a new virtualenv with python3 in command
-source py3env/bin/activate
-pip install package-name # to install any other package that is compatible with python3
+install virtualenv that is compatible with python3: $pip3 install virtualenv
+install python3: $brew install python3
+
+Add python3 to virtualenv: 
+ a) First find the path to pythons: $which python3
+    This will give the path to pythons. Eg. /usr/local/bin/python3
+    
+   b) Create the virtualenv and install other compatible packages:
+      $virtualenv -p /usr/local/bin/python3 py3env # Create a new virtualenv with python3 in command
+      $source py3env/bin/activate
+      $pip install package-name # to install any other package that is compatible with python3
