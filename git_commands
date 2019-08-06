@@ -1,0 +1,20 @@
+To start working on a new branch on arcbio bitbucket (once you have created it):
+1) $cd <local_dir>  # where you want to upload/create codes for pull request
+2) $git clone <path_to_bitbucket_branch>
+ e.g. $git clone https://bitbucket.org/arcbioinformatics/panini/branch/feature/Chidotu_filters
+ 
+ Next, check that you are in the branch and not in master. For this, do
+ $git branch
+ It should show feature/Chidotu_filters
+ 
+ 3) Next, create a suitable virtualenv for this branch in your local machine. Add code and test. 
+    
+ 4) To add (stage) a file to branch: $git add <filename>
+ 5) To remove a file from being committed to master (i.e. unstage): $ git reset HEAD <filename_to_be_removed>
+ 
+ 6) Commit the changes: $git commit -m "added blablabla"
+ 
+ 7) Push the changes to the branch: $git push origin <branch_name>
+                              E.g.: $git push origin feature/Chidotu_filters
+ 
+ 
