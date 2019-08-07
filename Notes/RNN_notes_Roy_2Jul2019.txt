@@ -130,4 +130,46 @@ https://towardsdatascience.com/multi-class-text-classification-with-lstm-1590bee
 https://blog.goodaudience.com/first-experience-of-building-a-lstm-model-with-tensorflow-e632bde911e1
 
 
+#########################
+ 7 August 2019
+ #########################
+ 
+ Notes on confusion matrix:
+ 
+ you will have to convert one-hot encoded y_predicted_scores and y_test into integers. To do this, use np.argmax, because the index corresponding to '1' in the 1-hot encoded vectors gives the corresponding class in multiclass classification. 
+ 
+ ```
+ ytest_score = MyModel.model.predict(x_test) # for each instance, this spits out n scores,
+                                             # where n is number of labels.
+
+# Get the index of the highest score. That gives the corresponding predicted label (int)
+
+y_predicted_label = (np.argmax(ytest_score, axis = 1)+1).reshape(-1,1)
+
+# Get the index corresponding to '1' in 1-hot encoded y_test. That gives the
+# corresponding true label (int).
+
+y_true_label = (np.argmax(y_test, axis=1)+1).reshape(-1,1)
+
+
+```
+
+To plot the confusion matrix, 
+
+```
+    from sklearn.metrics import confusion_matrix
+    import matplotlib.pyplot as plt
+    from mlxtend.plotting import plot_confusion_matrix
+
+    cm = confusion_matrix(y_true_label, y_predicted_label)
+
+    fig, ax = plot_confusion_matrix(conf_mat=cm)
+    #plt.matshow(cm, cmap=plt.cm.Greens)
+    plt.xlabel('Predicted labels')
+    plt.ylabel('True labels')
+```
+
+I mainly followed examples from this link: http://rasbt.github.io/mlxtend/user_guide/evaluate/confusion_matrix/
+
+
 
