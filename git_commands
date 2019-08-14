@@ -12,9 +12,16 @@ To start working on a new branch on arcbio bitbucket (once you have created it):
  4) To add (stage) a file to branch: $git add <filename>
  5) To remove a file from being committed to master (i.e. unstage): $ git reset HEAD <filename_to_be_removed>
  
- 6) Commit the changes: $git commit -m "added blablabla"
+ 6) Commit the changes: $git commit <filename> -m "added blablabla"
+                                        OR
+                        $ git commit -m "your comments"       # to commit all files at once 
  
  7) Push the changes to the branch: $git push origin <branch_name>
                               E.g.: $git push origin feature/Chidotu_filters
+                              
+ 8) If you make a new branch in the same git repo and you want to fetch that branch into your local git repo,
+    $git fetch && git checkout <branch_name>
+    
+    E.g. git fetch && git checkout feature/Get_reads_labels
  
  
