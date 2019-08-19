@@ -487,7 +487,24 @@ $ scp -i ~/.ssh/cloud -r UCL_Run5 arc@52.12.105.204:/DaTA01/
 
 Then press Ctrl A D.
 
+#########################################
+To copy pathogenid to your AWS instance
+#########################################
 
+First copy the id_rsa to your instance's /home/arc/.ssh/ by typing
+
+$scp -i ~/.ssh/cloud id_rsa arc@52.12.105.204:/home/arc/.ssh/
+
+Then do git clone 
+
+I did not git clone. I copied the libraries from tars:
+$ scp -i ~/.ssh/cloud -r venv arc@52.12.105.204:/DaTA01/ where venv is the virtual env that I was using.
+
+To ssh to the instance:
+
+$ ssh -i ~/.ssh/cloud arc@<aws-server-ip-address>
+
+E.g. ssh -i ~/.ssh/cloud arc@52.12.105.204
       
 
 
