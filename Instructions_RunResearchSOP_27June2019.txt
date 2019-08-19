@@ -463,6 +463,61 @@ $for dir in LI-*; do cd $dir; for i in *.txt; do newname="$dir""_""$i"; mv $i $n
    Eg. if you want to creat LI-15 to LI-28 directories, 
        $for i in `seq 15 28`; do mkdir LI-$i; done;
 
+
+##########################################################
+# To run IDP on Amazon cloud
+##########################################################
+
+First follow the instructions from this confluence page:
+https://arc-bio.atlassian.net/wiki/spaces/BF/pages/136609793/How+To+-+Launch+Instance+In+AWS
+
+When you are at the cloud step (step 1 on pre-requisites), place a cloud key in your local laptop or tars or from wherever you want to launch and get access to an AWS instance. 
+
+The cloud key is this:
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAowHnrL1eQWcvFKX5hE84E8srdAWZc9BD6kHpRAEp+wcTkqOC
+YDlM93wNnAUTm+Sp6bdkVwVIl2z/DwjPTf5cZX8fLxsKsgYMM5gmbUplTpXTIA9C
+atk8y0Wk1vnbI/RC28GiQJH5BxCfHHxHEc6/eVdIIBoGNxF6TH9TdkQsqnK1diLn
+vSFkJXuCot1XtqOnZubz/xMD/H3FTHTm1zPYF9zS+oQgt8Yb2jOl9R9419OpDn4Y
+grf6ZJrUQBXTn0urdIE37dU+XEMstFDu0L6ayF7ZoUQ2d6dmDyagBNAXTFVCtP0a
+mJqn3byqPtUX0jwOhvng8bYzwWJqydvxlC249QIDAQABAoIBADgDV5DMIa9nvY3i
+2rLUZfinP+9GXUymrC+7JmTv4XUZIWiqNwrJpeEFB8gtFmfjU1+0XQ5qCl++XIbW
+CCZM2YMnA5g0OqCh4193UP0NK3KtmTbTB4efznwrGlGk2eCo9rB9ATwe7Ou4knQ/
+YEyGNtWDYI1nY+tYXiYbOprRImgPJlB0+QIaPMrlLo/1rU4xuwl53dyE4Io7hzTX
+8sOnYcFaXdSg4FhQZ6/IWZ8hNznm5NF4c7wgLylgQgD2MvOYHoE1cgFXXF7enAfy
++ZnPsr64D6HjjjCcG7eqFelxV/+JG35HRfaRGx4Y2ZjpXwzYgSkT475lJlFrWo7l
+2RB4LwECgYEA0FmdThT5djQSf2i9YCVWGEbJ2OUc2wvnKY+7gnaZCQWJDZCKRi6V
+wVQotq57QKu21naKx63dL2uP22it3pdNDYxrPFZE0jO5J7iht5bG5VDPTTUWL5OZ
+SP9EEAVYuKJ5K6zk4phSquFBhp0/7+87uRE/86vmIRCNf8COVwKHDJ0CgYEAyEmX
+aHfURqS5Y2J0ZEobWG7ndT4gBsGGftBJRA1edAfpviZr1m4Ub0GQPSCvyaShnJH6
+trmHFuQiCGDoOyBsRK2QztzYkKVeJxpAhb7RdjCYNOowNWfNlj5400EiagVs1Y+Q
+2Ymc/9CC32e1zeABW1pi7pxg+uFgGqn98IcWcjkCgYBST4UAyvJ+yzWflh5ytG1d
+6+FkSadrtjkdx0XZ1cbBtKkfbcHi1hadqQTonufcdbom4fAT0NE4IbNUh/dgn792
+IcpfrOlFbd+xHJTu9acgAxvSsa1RIGuHVilqduJFFxLtuUE3b9wA3DrJ1qfiv02F
+4JW2S2wAFg0Asm7JWxtFVQKBgQC2UIbKSYmpZHh8xzo7sFmD/jAiwRJWFANhnCeV
+ErZP2IQk2sR+xGVFgODTQ9XAL2QNKbSWb/tQEwoHpm6+o5zqRzPxmYZo5J736SWi
+mTgB5eonAKYxdvPlN6i0ZC33ZEjVfYHVAzcuhZcb1UPgy29wwK4dlauRs2XP372Q
+HOeJwQKBgFMODUcX2CxkFXdhZvWDOaCCL2hd/7UmQACaOXZhCb1ckAqjqIbDMyP5
+6benv3TTcVWwrb5Kq7wgE2KK265HfkfIwKqGV2VF/CAM80xxMCq1rXsxCyscj/2G
+XH5GD1lxQ7GuGSgA+HcxhNn1qf/mYY6MEdijk+MRAd4gChiZYFKq
+-----END RSA PRIVATE KEY-----
+
+Add this key to your server's ~/.ssh/ ( in tars, for example). Then do
+$chmod 600 ~/.ssh/cloud
+
+Follow the steps to in the confluence page to launch an aws instance. 
+
+After launching the instance, to copy your run folders (e.g UCLRun5)
+to the instance, do
+
+$screen -S cpFolderToAWSInstance
+
+$ scp -i ~/.ssh/cloud -r UCL_Run5 arc@52.12.105.204:/DaTA01/
+
+Then press Ctrl A D.
+
+
       
 
 
