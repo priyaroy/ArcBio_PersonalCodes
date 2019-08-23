@@ -23,5 +23,8 @@ If you get a pip error, it could be a problem with your pip.conf file. Get the r
    NOTE: 1) Give the full paths for the <input.fasta> and <outputDir> directories! Otherwise, you will run into errors.
          2) Be sure that the fasta files start with a header '>fastaid' or something that starts with '>' (without the quotes). 
          Otherwise you will run into parse error.
+        
+        
+5) The main output is the <>fasta.filtered_terts.xml file. It has feature_name, type, position, length etc. 
 
 
