@@ -1,0 +1,23 @@
+1) Clone attacca_wrapper from Arc bitbucket: 
+https://bitbucket.org/arcbioinformatics/attacca_wrapper/src/master/
+
+Make sure that your bitbucket has the id_rsa key for tars. Only then you will be able to git clone.
+
+2) Create a new virtualenv: 
+
+$ virtualenv venv_attacca
+
+3) Install attacca 
+$cd <attacca_wrapper_dir>
+VERY IMP: $source venve_attacca/bin/activate
+(If u do not activate your virtual env, then you will get a 'permission denied' error since it will try to install globally.)
+
+$pip install .
+
+If you get a pip error, it could be a problem with your pip.conf file. Get the right index-url for your pip.conf file from Isaac. 
+
+4) To annotate a fasta file using attacca:
+
+   $luigi --module attacca.attacca RunAttacca --ldb <input.fasta> --directory <outputDir>
+
+
