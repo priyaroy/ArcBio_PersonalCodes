@@ -174,5 +174,13 @@ To plot the confusion matrix,
 
 I mainly followed examples from this link: http://rasbt.github.io/mlxtend/user_guide/evaluate/confusion_matrix/
 
+#############################
+30 Aug 2019
+#############################
 
+1) How to deal with highly imbalanced datasets such as ours where almost 98% of the reads have no corresponding label.
+
+https://towardsdatascience.com/sampling-techniques-for-extremely-imbalanced-data-part-i-under-sampling-a8dbc3d8d6d8#targetText=The%20definition%20of%20imbalanced%20data,order%20of%20100%20to%201.
+
+basically use an undersampling technique that's already implemented in scikit learn, eg. random undersampling, k-means, nearmiss etc.
 
