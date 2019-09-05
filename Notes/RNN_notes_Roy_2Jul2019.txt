@@ -184,3 +184,15 @@ https://towardsdatascience.com/sampling-techniques-for-extremely-imbalanced-data
 
 basically use an undersampling technique that's already implemented in scikit learn, eg. random undersampling, k-means, nearmiss etc.
 
+Question: why is ROC of a random classifier a line y=x, instead of a point at (0.5, 0.5):
+
+Answer is in Stackexchange for data science: https://datascience.stackexchange.com/questions/31872/auc-roc-of-a-random-classifier
+
+Derivation: Here I derive the AUC of a random classifier on a dataset with an arbitrary class imbalance.
+
+Assuming that there is a fraction 𝑥 of positive cases and a fraction 1−𝑥 of negative cases, and that our classifier consists of randomly assigning the positive class with probability 𝜌 and the negative class with probability 1−𝜌. The confusion matrix of a random classifier will have the following expected proportions
+𝑇𝑃=𝜌𝑥𝐹𝑃=𝜌(1−𝑥)𝐹𝑁=(1−𝜌)𝑥𝑇𝑁=(1−𝜌)(1−𝑥)
+Then we calculate the True Positive Rate (sensitivity) and False Positive Rate (1-specificity) of our random classifier
+
+𝑇𝑃𝑅=𝑇𝑃𝑇𝑃+𝐹𝑁=𝜌𝑥𝜌𝑥+(1−𝜌)𝑥=𝜌𝐹𝑃𝑅=𝐹𝑃𝑇𝑁+𝐹𝑃=𝜌(1−𝑥)𝜌(1−𝑥)+(1−𝜌)(1−𝑥)=𝜌
+
