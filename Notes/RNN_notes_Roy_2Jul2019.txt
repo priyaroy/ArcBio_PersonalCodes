@@ -183,6 +183,9 @@ I mainly followed examples from this link: http://rasbt.github.io/mlxtend/user_g
 https://towardsdatascience.com/sampling-techniques-for-extremely-imbalanced-data-part-i-under-sampling-a8dbc3d8d6d8#targetText=The%20definition%20of%20imbalanced%20data,order%20of%20100%20to%201.
 
 basically use an undersampling technique that's already implemented in scikit learn, eg. random undersampling, k-means, nearmiss etc.
+#############################
+4 Sep 2019
+#############################
 
 Question: why is ROC of a random classifier a line y=x, instead of a point at (0.5, 0.5):
 
@@ -191,8 +194,35 @@ Answer is in Stackexchange for data science: https://datascience.stackexchange.c
 Derivation: Here I derive the AUC of a random classifier on a dataset with an arbitrary class imbalance.
 
 Assuming that there is a fraction 𝑥 of positive cases and a fraction 1−𝑥 of negative cases, and that our classifier consists of randomly assigning the positive class with probability 𝜌 and the negative class with probability 1−𝜌. The confusion matrix of a random classifier will have the following expected proportions
-𝑇𝑃=𝜌𝑥𝐹𝑃=𝜌(1−𝑥)𝐹𝑁=(1−𝜌)𝑥𝑇𝑁=(1−𝜌)(1−𝑥)
+𝑇𝑃=𝜌𝑥
+𝐹𝑃=𝜌(1−𝑥)
+𝐹𝑁=(1−𝜌)𝑥
+𝑇𝑁=(1−𝜌)(1−𝑥)
 Then we calculate the True Positive Rate (sensitivity) and False Positive Rate (1-specificity) of our random classifier
 
-𝑇𝑃𝑅=𝑇𝑃𝑇𝑃+𝐹𝑁=𝜌𝑥𝜌𝑥+(1−𝜌)𝑥=𝜌𝐹𝑃𝑅=𝐹𝑃𝑇𝑁+𝐹𝑃=𝜌(1−𝑥)𝜌(1−𝑥)+(1−𝜌)(1−𝑥)=𝜌
+𝑇𝑃𝑅=𝑇𝑃/(𝑇𝑃+𝐹𝑁)
+=𝜌𝑥/[𝜌𝑥+(1−𝜌)𝑥]
+=𝜌
 
+𝐹𝑃𝑅=𝐹𝑃/(𝑇𝑁+𝐹𝑃)
+=𝜌(1−𝑥)/[𝜌(1−𝑥)+(1−𝜌)(1−𝑥)]
+=𝜌
+
+So, TPR = FPR for a random classifier.
+
+#############################
+6 Sep 2019
+#############################
+
+Difference between an epoch and a batch. And what it means by validation loss per epoch.
+
+Answer: When we perform mini-batch gradient descent, we basically input a batch of m randomly chosen data points to calculate the gradient of the loss function versus each parameter. This is repeated until we hit a total size of N which the full training dataset size (excluding the validation set).
+
+E.g. if the training set is split into 800 training points and 200 validation points, and the batch size =50, then the computation will be as as follows:
+
+choose random 50 points out of 800 ---> find the gradient using these data points & update the parameter (say theta) by doing:
+                                        theta_new = theta_old - learning_rate*gradient
+                                        
+Repeat the above step 800/50 times. So, the theta parameter gets updated 800/50 = 18 times. After the 18th iteration, calculate the accuracy and the loss using the validation set. The validation set is NOT used to update the parameter. 
+
+An epoch is when the the whole dataset finishes participating in training. Each epoch consists one 1 batch in case of simple gradient descent, or 800/50 batches in the above example, in case of mini-batch gradient descent.    
