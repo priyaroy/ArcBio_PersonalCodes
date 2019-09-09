@@ -38,6 +38,10 @@ print('Shape of data tensor:', X.shape)
     Keras Embedding documentation: https://www.tensorflow.org/api_docs/python/tf/keras/layers/Embedding
 
    This should be the 1st layer in the model. A very good explanation of embedding and its advantage over 1-hot encoding is given in https://towardsdatascience.com/deep-learning-4-embedding-layers-f9a02d55ac12.
+   
+   Here is an article about how embedding is done. The most common way of doing it is by using word-to-vector, which itself 
+   involves neural networks. 
+   https://towardsdatascience.com/introduction-to-word-embedding-and-word2vec-652d0c2060fa#targetText=Word%20embedding%20is%20one%20of,relation%20with%20other%20words%2C%20etc.&targetText=Loosely%20speaking%2C%20they%20are%20vector%20representations%20of%20a%20particular%20word.
 
    ‪model = Sequential()‬
 ‪model.add(Embedding(X, Y, Z))‬
