@@ -225,4 +225,26 @@ choose random 50 points out of 800 ---> find the gradient using these data point
                                         
 Repeat the above step 800/50 times. So, the theta parameter gets updated 800/50 = 18 times. After the 18th iteration, calculate the accuracy and the loss using the validation set. The validation set is NOT used to update the parameter. 
 
-An epoch is when the the whole dataset finishes participating in training. Each epoch consists one 1 batch in case of simple gradient descent, or 800/50 batches in the above example, in case of mini-batch gradient descent.    
+An epoch is when the the whole dataset finishes participating in training. Each epoch consists one 1 batch in case of simple gradient descent, or 800/50 batches in the above example, in case of mini-batch gradient descent.  
+
+###########################
+9 Sept 2019
+###########################
+
+Why precision-recall curves are better curves for evaluation than ROC, for imbalanced datasets?
+
+1) https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/
+
+Reviewing both precision and recall is useful in cases where there is an imbalance in the observations between the two classes. Specifically, there are many examples of no event (class 0) and only a few examples of an event (class 1).
+
+The reason for this is that typically the large number of class 0 examples means we are less interested in the skill of the model at predicting class 0 correctly, e.g. high true negatives.
+
+Key to the calculation of precision and recall is that the calculations do not make use of the true negatives. It is only concerned with the correct prediction of the minority class, class 1.
+
+
+2)http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/#targetText=Precision%2DRecall%20curve&targetText=ROC%20curves%20are%20appropriate%20when,are%20appropriate%20for%20imbalanced%20datasets.
+
+
+
+
+
