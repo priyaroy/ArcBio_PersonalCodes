@@ -23,5 +23,51 @@ To start working on a new branch on arcbio bitbucket (once you have created it):
     $git fetch && git checkout <branch_name>
     
     E.g. git fetch && git checkout feature/Get_reads_labels
+    
+ 9) To resolve a conflict between the dev branch and another branch (called it branch1) that you want to merge to dev:
  
+       git clone <panini.git>
+       $ git checkout branch1
+       $ git pull origin dev
+ 
+       When you do this, you will get a merge conflict message. 
+ 
+           A) If there are conflicting changes in a file (e.g. a code, say test.py)
+             open test.py. The file will show the place where there is conflict, in the following manner: 
+              ```
+              >>>>>> HEAD
+              <whatever sentences the HEAD, i.e. dev branch, currently has>
+              ||||||||||| common ancestor version
+              <whatever was common to dev and branch1 before the conflict began>
+               ============
+               <sentences that branch1 has>
+               >>>>>>>>>>>>>>>>>
+               '''
+ 
+               Out of the above 3 options, choose the one that you want. Then remove the rest (including the lines 
+               like >>>>>> HEAD, ||||||||||| common ancestor version etc)
+               
+           B) To see whether you have any folder conflicts, do:
+              $ git status
+              
+              If there are conflicts, you will see red text saying:
+              Unmerged paths:
+              (use "git add/rm <file>..." as appropriate to mark resolution)
+
+	              both deleted:    ../../LI-03/Toy_R1_v1.fastq
+	              both deleted:    ../../LI-03/Toy_R2_v1.fastq
+              	both deleted:    ../../LI-03/fastqs/Toy_R1_v1.fastq
+              	added by them:   ../../LI-03/fastqs/trimmed_human_nc_removed/Toy_R1_v1.fastq
+              	added by them:   ../../LI-03/fastqs/trimmed_human_nc_removed/Toy_R2_v1.fastq
+              	added by us:     ../../LI-03/fastqs/trimmed_human_nc_removed_source_325/Toy_R1_v1.fastq
+              	added by us:     ../../LI-03/fastqs/trimmed_human_nc_removed_source_325/Toy_R2_v1.fastq
+               
+               Choose each of the above paths and either git rm them or git add them, based on which paths you want 
+               to keep. 
+               
+        After all file and folder merge conflicts are resolved, do a git commit and then git push. You will see that 
+        all conflicts are resolved (yellow highlights on bitbucket website will be gone, e.g. of yellow highligts here 
+        https://confluence.atlassian.com/bitbucket/resolve-merge-conflicts-704414003.html), and 
+        the 'Merge' button on your bitbucket will be enabled. 
+              
  
