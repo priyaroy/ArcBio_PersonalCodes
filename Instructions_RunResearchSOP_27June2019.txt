@@ -507,7 +507,46 @@ $ ssh -i ~/.ssh/cloud arc@<aws-server-ip-address>
 E.g. ssh -i ~/.ssh/cloud arc@52.12.105.204
       
 
+###########
+Nov 12, 2019
+############
 
+To select strain and species names from arcive based on IDs, 
+
+ssh tars
+pgsql
+arcive=> \copy (select source_id, reference_sequence_id as "ref_id", diagnostic_sequences.pathogen_id, diagnostic_sequences.name as "strain_name", pathogens.name as "species_name" FROM diagnostic_sequences JOIN pathogens on diagnostic_sequences.id = pathogens.reference_sequence_id JOIN pathogens_sources ON diagnostic_sequences.pathogen_id = pathogens_sources.pathogen_id ORDER BY source_id) to 'IDtoNames_all_sources.txt' csv header delimiter E'\t' null ''
+
+This prints the selected columns from 3 tables to a textfile. The 3 tables are:
+A) Table 'diagnostic_sequences'. Columns are:
+   * id (same as reference_sequence_id i.e. strain_id. E.g. 38316)
+   * pathogen_id (they are species_id)
+   * name (These are the strain names)
+   * type
+   * sequence_file
+   * variants_file
+   * taxonomic_id
+   * is_representative
+   
+B) Table 'pathogens'. Columns are:
+   * id (same as pathogen id)
+   * reference_sequence_id (i.e. strain_id)
+   * name (species name)
+   * short_name
+   * graph_file
+   * reference_file
+   * graph_created_at
+   * graph_created_with_version
+   * image
+   * organism_type
+   * analysis_type
+   * internal_descriptor
+   * attacca_view_id
+   
+C) Table 'pathogens_sources'. Columns:
+   * pathogen_id (i.e. species_id)
+   * source_id (e.g. 325)
+   
 
 
 
