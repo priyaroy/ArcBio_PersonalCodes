@@ -515,7 +515,10 @@ To select strain and species names from arcive based on IDs,
 
 ssh tars
 pgsql
-arcive=> \copy (select source_id, reference_sequence_id as "ref_id", diagnostic_sequences.pathogen_id, diagnostic_sequences.name as "strain_name", pathogens.name as "species_name" FROM diagnostic_sequences JOIN pathogens on diagnostic_sequences.id = pathogens.reference_sequence_id JOIN pathogens_sources ON diagnostic_sequences.pathogen_id = pathogens_sources.pathogen_id ORDER BY source_id) to 'IDtoNames_all_sources.txt' csv header delimiter E'\t' null ''
+arcive=> \copy (select source_id, reference_sequence_id as "ref_id", diagnostic_sequences.pathogen_id,
+diagnostic_sequences.name as "strain_name", pathogens.name as "species_name" FROM diagnostic_sequences JOIN pathogens on
+diagnostic_sequences.id = pathogens.reference_sequence_id JOIN pathogens_sources ON diagnostic_sequences.pathogen_id = 
+pathogens_sources.pathogen_id ORDER BY source_id) to 'IDtoNames_all_sources.txt' csv header delimiter E'\t' null ''
 
 This prints the selected columns from 3 tables to a textfile. The 3 tables are:
 A) Table 'diagnostic_sequences'. Columns are:
