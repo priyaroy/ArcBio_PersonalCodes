@@ -526,7 +526,7 @@ A) Table 'diagnostic_sequences'. Columns are:
    * pathogen_id (they are species_id)
    * name (These are the strain names)
    * type
-   * sequence_file
+   * sequence_file (contains S3 links to the fasta files, incliding the NC fastas (the ones with names Oligo%))
    * variants_file
    * taxonomic_id
    * is_representative
