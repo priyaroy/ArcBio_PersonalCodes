@@ -32,7 +32,15 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
     For this, first go to the instance using the stored login command.
    
     a) Cp your local training data, codes etc to s3. 
-    b) cp the training data, codes etc from s3 to your instance using the aws command, like you do in servers. 
+    b) cp the training data, codes etc from s3 to your instance AT /DATA01/  using the aws command, like you do in servers. 
+    
+    Alternatively (not recommended though since it is good to have a copy on s3), you can load directly from 
+    your local machine to the AWS instance:
+
+     (on your local machine) $screen -S cpFolderToAWSInstance
+
+                             $ scp -i ~/.ssh/cloud -r <full-path-of-folder-to-copy> arc<aws-server-ip-address>:/DaTA01/
+                                                   
     c) Install python3 virtual environment in your instance. 
     d) Install all required packages in your python3 virtual environment.
     
