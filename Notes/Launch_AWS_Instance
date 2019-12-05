@@ -1,0 +1,45 @@
+Isaac's instructions:
+https://arc-bio.atlassian.net/wiki/spaces/BF/pages/136609793/How+To+-+Launch+Instance+In+AWS
+
+In a nutshell, 
+
+1) Install arcbio-tools following the instructions given in the above link
+2) $ cd ~/arcbio-tools/idp_in_aws/create_instance
+3) emacs env.sh
+   * Change VOL_SIZE (It is in GB. For RNN,try 100 GB. Currently the total size of my RNN folder is 44 GB.)
+   * Change EC2_INSTANCE_SIZE try g3.4xlarge(16 core, 122 GB, $1.14 ph)
+     as recommended for RNN by https://aws.amazon.com/ec2/pricing/on-demand/
+   
+     Alex suggested either p3.2xlarge (8 CPU, 61 GB mem, $3.06 per hour) 
+                                      or p2.xlarge (4 CPU, 61 GB mem, $0.9 per hour)
+  * Change EC2_INSTANCE_NAME to 'Roy_RNN_%' current date
+  
+  
+  4) To launch an instance $./launch.sh create
+  you will get a message 
+       -----------------------------------------
+          *********    PLEASE NOTE!!!    *********
+          To Login:
+                    ssh -i ~/.ssh/cloud arc@<aws-server-ip-address>
+          .
+          .
+          .
+       ----------------------------------------
+
+STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
+  
+  5) Next go to your instance to upload codes, data and to install libraries.
+    For this, first go to the instance using the stored login command.
+   
+    a) Cp your local training data, codes etc to s3. 
+    b) cp the training data, codes etc from s3 to your instance using the aws command, like you do in servers. 
+    c) Install python3 virtual environment in your instance. 
+    d) Install all required packages in your python3 virtual environment.
+    
+ 6) When an instance completes the submitted job, COPY ALL RESULTS TO S3. THIS IS A MUST!!!
+ 
+ 7) Now it is safe to delete the instance To delete, run $./launch.sh delete in your local machine from where you had
+    created the instance (in this case, first $cd ~/arcbio-tools/idp_in_aws/create_instance, then $./launch.sh delete)
+  
+  
+   
