@@ -70,6 +70,9 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
        iv) $pip3 install pandas
        v) $pip3 install keras
        vi) $pip3 install matplotlib
+       vii) emacs (optional)
+            $sudo yum install epel-release
+            $sudo yum install emacs
  
     
  6) When an instance completes the submitted job, COPY ALL RESULTS TO S3. THIS IS A MUST!!!
