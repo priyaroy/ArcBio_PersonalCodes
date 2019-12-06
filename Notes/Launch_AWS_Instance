@@ -20,7 +20,7 @@ In a nutshell,
        -----------------------------------------
           *********    PLEASE NOTE!!!    *********
           To Login:
-                    ssh -i ~/.ssh/cloud arc@<aws-server-ip-address>
+                    ssh -i ~/.ssh/cloud arc@34.220.51.16
           .
           .
           .
