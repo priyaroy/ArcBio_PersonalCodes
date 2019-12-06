@@ -70,6 +70,7 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
        iv) $pip3 install pandas
        v) $pip3 install keras
        vi) $pip3 install matplotlib
+       vii) $pip3 install joblib (since importing from sklearn will be deprecated in sklearn v0.23)
        vii) emacs (optional)
             $sudo yum install epel-release
             $sudo yum install emacs
