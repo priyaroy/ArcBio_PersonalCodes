@@ -76,9 +76,14 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
  
     
  6) When an instance completes the submitted job, COPY ALL RESULTS TO S3. THIS IS A MUST!!!
+    
+   To copy folders to your local machine, in your local machine run:
+   $cd ~/Desktop (if you want to copy to desktop)
+   $scp -i ~/.ssh/cloud -r arc@34.220.51.16://DaTA01/<folder_to_copy> .
+   
+   
  
  7) Now it is safe to delete the instance To delete, run $./launch.sh delete in your local machine from where you had
     created the instance (in this case, first $cd ~/arcbio-tools/idp_in_aws/create_instance, then $./launch.sh delete)
   
-  
-   
+ 
