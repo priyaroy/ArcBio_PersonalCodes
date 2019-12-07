@@ -34,7 +34,7 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
     b) Go to the instance using the stored login command (ssh -i blabla). Go to /DaTA01/. Make a folder there, e.g. 'roy_RNN'.
     c) cp the training data, codes etc from s3 to your instance AT /DATA01/roy_RNN/  using the aws command, 
     like you do in servers.
-       E.g. aws s3 cp /DaTA01/roy_RNN/ s3://arcbio.research.com/MONTHLY/roy/NN/TrainingModels_6Dec2019/ --recursive
+       
     
     Alternatively (not recommended though since it is good to have a copy on s3), you can load directly from 
     your local machine to the AWS instance:
@@ -79,6 +79,7 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
  
     
  6) When an instance completes the submitted job, COPY ALL RESULTS TO S3. THIS IS A MUST!!!
+   E.g. aws s3 cp /DaTA01/roy_RNN/ s3://arcbio.research.com/MONTHLY/roy/NN/TrainingModels_6Dec2019/ --recursive
     
    To copy folders to your local machine, in your local machine run:
    $cd ~/Desktop (if you want to copy to desktop)
