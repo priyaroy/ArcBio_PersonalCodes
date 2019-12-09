@@ -56,7 +56,7 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
       * Install pip3: $sudo yum install python34-setuptools
                       $sudo easy_install-3.4 pip
                       
-      * Install virtualenv: $pip3 install virtualenv
+      * Install virtualenv: $pip3 install --user virtualenv
       
       * Connect python3 to virtualenv and create a virtualenv called py3env, say: 
         $which python3
