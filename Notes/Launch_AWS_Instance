@@ -44,14 +44,20 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
                              $ scp -i ~/.ssh/cloud -r <full-path-of-folder-to-copy> arc<aws-server-ip-address>:/DaTA01/roy_RNN/
                                                    
     c) For RNN, install following:
-       * brew (the machine is centos so use : 
+       * brew (OPTIONAL) (the machine is centos so use : 
                 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)")
                 
-       * Add brew installation to your PATH: 
+         Add brew installation to your PATH: 
          $vim ~/.bashrc
          Insert the following: export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
          exit .bashrc
          $source ~/.bashrc
+         
+      * Install python3: 
+                        $ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+                        $ sudo yum update
+                        $ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+                        To check the version: $python3.6 -V
          
       * Install pip3: $sudo yum install python34-setuptools
                       $sudo easy_install-3.4 pip
