@@ -82,6 +82,10 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
        vii) emacs (optional)
             $sudo yum install epel-release
             $sudo yum install emacs
+            
+ * Note: the cpu load average tells how many are running and how many are idle. E.g. if you have 1 CPU and load average
+         is 10, then 1 process is running and 9 are idle, waiting to run. If you have 64 CPU and load average is 45, 
+         then it meand 45 processes are running and no process is in the waiting for CPU. 
  
     
  6) When an instance completes the submitted job, COPY ALL RESULTS TO S3. THIS IS A MUST!!!
