@@ -86,6 +86,11 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
  * Note: the cpu load average tells how many are running and how many are idle. E.g. if you have 1 CPU and load average
          is 10, then 1 process is running and 9 are idle, waiting to run. If you have 64 CPU and load average is 45, 
          then it meand 45 processes are running and no process is in the waiting for CPU. 
+         
+         To print monitoring results for a particular process id every 1 sec:
+         $top -d 1 -b |grep <process_id>
+         
+         e.g. top -d 1 -b |grep 57259
  
     
  6) When an instance completes the submitted job, COPY ALL RESULTS TO S3. THIS IS A MUST!!!
