@@ -1,0 +1,27 @@
+To copy only certain files from an aws directory:
+
+E.g.there's TPx_Probit_18reps_30M_run1 directory on aws s3, with folder structure:
+LIB-001
+|----->abundance
+|-----> alignment
+|
+.
+.
+|-----> strains
+         | 
+         |---------> evidence.tsv
+LIB-002
+|----->abundance
+|-----> alignment
+|
+.
+.
+|-----> strains
+         | 
+         |---------> evidence.tsv
+         
+and I want to copy only the evidence.tsv files, maintaining the folder structure, to know from LIB the files came.
+
+For that, the command is:
+$aws s3 cp s3://bdbstorage01.arcbio.com/sbs/190205_NB501788_0295_AHKMK3BGX9/projects/TPx_Probit_18reps_30M_run1/ 
+<path_to_local_folder> --recursive --exclude '*' --include '*/strains/evidence.tsv'
