@@ -25,3 +25,6 @@ and I want to copy only the evidence.tsv files, maintaining the folder structure
 For that, the command is:
 $aws s3 cp s3://bdbstorage01.arcbio.com/sbs/190205_NB501788_0295_AHKMK3BGX9/projects/TPx_Probit_18reps_30M_run1/ 
 <path_to_local_folder> --recursive --exclude '*' --include '*/strains/evidence.tsv'
+
+To rename the evidence.tsv files such that they name carries the LIB number:
+for dir in LIB-*; do cd $dir/strains/; pwd; newname="$dir""_evidence.tsv"; echo $newname; cp evidence.tsv $newname; cd ../../; done;
