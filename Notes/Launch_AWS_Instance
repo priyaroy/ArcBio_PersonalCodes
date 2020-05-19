@@ -42,8 +42,14 @@ STORE THE LOGIN COMMAND DISPLAYED IN THE ABOVE MESSAGE FOR FUTURE USE
      (on your local machine) $screen -S cpFolderToAWSInstance
 
                              $ scp -i ~/.ssh/cloud -r <full-path-of-folder-to-copy> arc<aws-server-ip-address>:/DaTA01/roy_RNN/
+                             
+    d) To clone data from a git repository, you need to add permission to access arcbio git. For this:
+       * remove the ~/.ssh/id_rsa on the instance (if there is one, from the home directory)
+       * Copy your ~/.ssh/id_rsa (the one on your latop) to the home directory (not the /DaTA01/) in the instance.
+         E.g. scp -i ~/.ssh/cloud id_rsa arc@<the_ip>:/home/arc/.ssh/
+       * do chmod 600 ~/.ssh/id_RSA
                                                    
-    c) For RNN, install following:
+    e) For RNN, install following:
        * brew (OPTIONAL) (the machine is centos so use : 
                 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)")
                 
