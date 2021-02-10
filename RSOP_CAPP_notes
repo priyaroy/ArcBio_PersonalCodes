@@ -1,0 +1,4 @@
+Some ways to check that the pipeline is completed, is by checking the following:
+1) check for existence of <projects dir>/StrainCalls
+2) Count of strainscalls.tsv inside StrainCalls should be equal to # libs
+3) check for existence of Std_Report dir inside StrainCalls dir
