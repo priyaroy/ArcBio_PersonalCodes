@@ -1,4 +1,28 @@
 Some ways to check that the pipeline is completed, is by checking the following:
+Most imp: 0) Check for multiqc report. If it does not exist, you will see that stdout and stderr files will be incomplete.
+It happens because some libs have very few reads. The fix is as follows (from Alain) in 'Val1 New Graph Analysis' chat on Teams:
+    "So the issue is that 4 libraries have very few reads and much of the downstream content isn't generated. 
+    This may be an issue for some of the other runs, so the first check is to see that multiqc completed processing the run. 
+    Check to see that the *.multiqc_report.html file and data directory has been generated. The work around is:
+   
+       Delete the Standard_Report, Strain_Call directories
+       
+	     Create a revised samplesheet, removing all of the libraries with low/no read counts. You can identify these be 
+       looking at the bcl2fastqs Demux report info (projects/Stats/DemultiplexingStats.xml) and examining the library names 
+       with less than 100k reads (this is a heuristic threshold for AV1 30M runs and is not broadly applicable to all NGS).
+	
+       Activate the py36 virtual environment: $conda activate py36
+       
+	     Run standard reports with the revised sample sheet: 
+       run_std_reports -i <REVISED_SAMPLESHEET> -d <projects/PROJECT_DIRECTORY> -r /mnt/rsop_deps/refs/g360_host/rRNA.bed
+       
+	     This will take some time.
+	      Run multiqc within the projects/PROJECT_DIRECTORY directory: 
+        multiqc . -o . -n <PROJECT_DIRECTORY>.multiqc_report
+
+Feel free to review the data structure of the previous processing of these runs to check structure or continue to contact me with any issues you are facing."
+
+
 1) check for existence of <projects dir>/StrainCalls
 2) Count of strainscalls.tsv inside StrainCalls should be equal to # libs
 3) check for existence of Std_Report dir inside StrainCalls dir
